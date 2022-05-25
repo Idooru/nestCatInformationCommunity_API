@@ -1,4 +1,10 @@
-import { Body, UseFilters, UseInterceptors } from "@nestjs/common";
+import {
+  Body,
+  Req,
+  UseFilters,
+  UseGuards,
+  UseInterceptors,
+} from "@nestjs/common";
 import { Controller, Get, Post } from "@nestjs/common";
 import { HttpExceptionFilter } from "src/common/exceptions/http-exception.filter";
 import { SuccessInterceptor } from "src/common/interceptors/success.interceptor";
@@ -6,17 +12,26 @@ import { CatsService } from "./cats.service";
 import { CatRequestDto } from "./dto/cats.request.dto";
 import { ApiOperation, ApiResponse } from "@nestjs/swagger";
 import { ReadOnlyCatDto } from "./dto/cat.dto";
+import { AuthService } from "../auth/auth.service";
+import { LoginRequestDto } from "../auth/dto/login.request.dto";
+import { JwtAuthGuard } from "../auth/jwt/jwt.guard";
+import { CurrentUser } from "../common/decorator/user.decorator";
+import { Cat } from "./cats.schema";
 
 @Controller("cats")
 @UseInterceptors(SuccessInterceptor)
 @UseFilters(HttpExceptionFilter)
 export class CatsController {
-  constructor(private readonly catsService: CatsService) {}
+  constructor(
+    private readonly catsService: CatsService,
+    private readonly authService: AuthService,
+  ) {}
 
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: "현재 고양이 가져오기" })
   @Get()
-  getCurrentCat() {
-    return "current cat";
+  getCurrentCat(@CurrentUser() cat: Cat) {
+    return cat.readOnlyData;
   }
 
   @ApiResponse({
@@ -36,14 +51,8 @@ export class CatsController {
 
   @ApiOperation({ summary: "로그인" })
   @Post("login")
-  logIn() {
-    return "login";
-  }
-
-  @ApiOperation({ summary: "로그아웃" })
-  @Post("logout")
-  logOut() {
-    return "logout";
+  logIn(@Body() data: LoginRequestDto) {
+    return this.authService.jwtLogin(data);
   }
 
   @ApiOperation({ summary: "고양이 사진 업로드하기" })

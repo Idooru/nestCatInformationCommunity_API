@@ -33,4 +33,20 @@ export class CatsRepository {
       throw new HttpException("db error", 400);
     }
   }
+
+  async findCatByEmail(email: string): Promise<Cat | null> {
+    try {
+      return await this.catModel.findOne({ email });
+    } catch (err) {
+      throw new HttpException("db error", 400);
+    }
+  }
+
+  async findCatByIdWithoutPassword(catId: string): Promise<Cat | null> {
+    try {
+      return await this.catModel.findById(catId).select("-password");
+    } catch (err) {
+      throw new HttpException("db error", 400);
+    }
+  }
 }
