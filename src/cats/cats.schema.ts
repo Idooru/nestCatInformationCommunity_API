@@ -48,13 +48,17 @@ export class Cat extends Document {
   password: string;
 
   @IsString()
-  @Prop()
+  @Prop({
+    default:
+      "https://github.com/amamov/NestJS-solid-restapi-boilerplate/raw/main/docs/images/1.jpeg",
+  })
   imgUrl: string;
 
   readonly readOnlyData: {
     id: string;
     name: string;
     email: string;
+    imgUrl: string;
   };
 }
 
@@ -65,5 +69,6 @@ CatSchema.virtual("readOnlyData").get(function (this: Cat) {
     id: this.id,
     email: this.email,
     name: this.name,
+    imgUrl: this.imgUrl,
   };
 });

@@ -2,7 +2,6 @@ import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { CatsRepository } from "../cats/cats.repository";
 import { LoginRequestDto } from "./dto/login.request.dto";
 import { JwtService } from "@nestjs/jwt";
-import { response as res } from "express";
 
 import * as bcrypt from "bcrypt";
 
