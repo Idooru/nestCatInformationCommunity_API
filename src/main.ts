@@ -23,6 +23,8 @@ async function bootstrap() {
     }),
   );
 
+  console.log(path.join(__dirname, "./common", "uploads"));
+
   app.useStaticAssets(path.join(__dirname, "./common", "uploads"), {
     prefix: "/media",
   });

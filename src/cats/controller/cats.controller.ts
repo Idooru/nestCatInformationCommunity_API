@@ -8,17 +8,17 @@ import {
 import { Controller, Get, Post } from "@nestjs/common";
 import { HttpExceptionFilter } from "src/common/exceptions/http-exception.filter";
 import { SuccessInterceptor } from "src/common/interceptors/success.interceptor";
-import { CatsService } from "./cats.service";
-import { CatRequestDto } from "./dto/cats.request.dto";
+import { CatsService } from "../service/cats.service";
+import { CatRequestDto } from "../dto/cats.request.dto";
 import { ApiOperation, ApiResponse } from "@nestjs/swagger";
-import { ReadOnlyCatDto } from "./dto/cat.dto";
-import { AuthService } from "../auth/auth.service";
-import { LoginRequestDto } from "../auth/dto/login.request.dto";
-import { JwtAuthGuard } from "../auth/jwt/jwt.guard";
-import { CurrentUser } from "../common/decorator/user.decorator";
-import { Cat } from "./cats.schema";
+import { ReadOnlyCatDto } from "../dto/cat.dto";
+import { AuthService } from "../../auth/service/auth.service";
+import { LoginRequestDto } from "../../auth/dto/login.request.dto";
+import { JwtAuthGuard } from "../../auth/jwt/jwt.guard";
+import { CurrentUser } from "../../common/decorator/user.decorator";
+import { Cat } from "../cats.schema";
 import { FilesInterceptor } from "@nestjs/platform-express";
-import { multerOptions } from "../common/utils/multer.options";
+import { multerOptions } from "../../common/utils/multer.options";
 
 @Controller("cats")
 @UseInterceptors(SuccessInterceptor)
